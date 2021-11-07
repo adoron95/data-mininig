@@ -1,6 +1,7 @@
 dataMiningEx_1\digits-training.arff
 dataMiningEx_1\venv\preprocess.py
 /.idea/.gitignore
+*gz
 /venv/Lib/site-packages/pip-19.0.3-py3.8.egg/pip/_vendor/packaging/__about__.py
 /venv/Lib/site-packages/pip-19.0.3-py3.8.egg/pip/_internal/cli/__init__.py
 /venv/Lib/site-packages/pip-19.0.3-py3.8.egg/pip/_internal/commands/__init__.py
