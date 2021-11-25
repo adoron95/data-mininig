@@ -1,7 +1,8 @@
 import random
 
-N = 5  # no. of attributes
-MINSUP = 0.4
+N = 120  # no. of attributes
+MINSUP = 0.28
+freq=[]
 
 
 # Creates a file named filename containing m sorted itemsets of items 0..N-1
@@ -33,6 +34,11 @@ def is_in(smallitemset, bigitemset):
             b += 1
     return s == len(smallitemset)
 
+def setFrequncy(itemset):
+    for lis in freq:
+        if itemset == lis[0]:
+            return True
+    return False
 
 # Returns a list of itemsets (from the list itemsets) that are frequent
 # in the itemsets in filename
@@ -55,7 +61,9 @@ def frequent_itemsets(filename, itemsets):
     freqitemsets = []
     for i in range(len(itemsets)):
         if count[i] >= MINSUP * filelength:
-            freqitemsets += [itemsets[i]]
+
+            freqitemsets.append( [itemsets[i][:],count[i]])
+            freq.append( freqitemsets[-1])
     return freqitemsets
 
 
@@ -66,8 +74,11 @@ def create_kplus1_itemsets(kitemsets, filename):
         # compares all pairs, without the last item, (note that the lists are sorted)
         # and if they are equal than adds the last item of kitemsets[j] to kitemsets[i]
         # in order to create k+1 itemset
-        while j < len(kitemsets) and kitemsets[i][:-1] == kitemsets[j][:-1]:
-            kplus1_itemsets += [kitemsets[i] + [kitemsets[j][-1]]]
+        while j < len(kitemsets) and kitemsets[i][0][:-1] == kitemsets[j][0][:-1]:
+            if setFrequncy([kitemsets[i][0][-1] +kitemsets[j][0][-1]]):
+            #if is_in( [[kitemsets[i][-1]]+[kitemsets[j][-1]]],kitemsets ):
+                kplus1_itemsets += [kitemsets[i][0] + [kitemsets[j][0][-1]]]
+                freq.append([kitemsets[i][0][:-1] +[kitemsets[j][0][-1]]])
             j += 1
     # checks which of the k+1 itemsets are frequent
     return frequent_itemsets(filename, kplus1_itemsets)
@@ -89,7 +100,7 @@ def minsup_itemsets(filename):
     return minsupsets
 
 
-createfile(10, "itemsets.txt")
+createfile(50, "itemsets.txt")
 print(minsup_itemsets("itemsets.txt"))
 
 
